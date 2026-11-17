@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+@import '@fontsource/young-serif/latin-400.css';
+@import '@fontsource-variable/figtree/wght.css';
+
+/* Design system: a página alterna os dois materiais do violão,
+   a escala escura (jacarandá) e o tampo claro (abeto). */
+@theme {
+  --color-jacaranda: #2e1a14;
+  --color-jacaranda-claro: #4a2b20;
+  --color-tampo: #f1d7a0;
+  --color-tampo-claro: #f8e8c4;
+  --color-madeira: #8a4b2a;
+  --color-roseta: #1f6e57;
+  --color-roseta-escuro: #17543f;
+  --color-corda: #e7dcc8;
+  --color-traste: #b9b2a6;
+  --color-escala: #24130e;
+
+  --font-titulo: 'Young Serif', Georgia, serif;
+  --font-texto: 'Figtree Variable', system-ui, sans-serif;
+
+  --animate-faixa: faixa 32s linear infinite;
+  --animate-brilho: brilho 4.5s ease-in-out infinite;
+
+  @keyframes faixa {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* O brilho cruza o botão no primeiro terço do ciclo e descansa no resto. */
+  @keyframes brilho {
+    0% {
+      transform: translateX(-150%) skewX(-20deg);
+    }
+    35%,
+    100% {
+      transform: translateX(350%) skewX(-20deg);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-tampo);
+    color: var(--color-jacaranda);
+    font-family: var(--font-texto);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-roseta);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Verde sobre jacarandá fica abaixo de 3:1; nas áreas escuras o foco usa o tampo. */
+  [data-fundo='escuro'] :focus-visible {
+    outline-color: var(--color-tampo);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}

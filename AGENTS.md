@@ -104,7 +104,7 @@ Estas regras se aplicam **a qualquer tela ou módulo React atual ou futuro**:
 1. **`export default`** para telas e componentes reutilizáveis principais. Usar exports nomeados para tipos, funções auxiliares e utilitários quando apropriado.
 2. **Componente focado em renderização e composição.** Regras de domínio, orquestração de chamadas, handlers complexos e estados complexos ficam em custom hooks (`use*.ts` ou `use*.tsx`).
 3. **Não criar hook artificial:** estado visual simples, alternância trivial ou handler sem regra de negócio podem permanecer no componente.
-4. **Tipos fora dos componentes:** `type` e `interface` devem ficar em arquivo de tipos do módulo (por exemplo `types.ts` ou `types/`), reutilizando contratos já existentes.
+4. **Tipos fora dos componentes:** `type` e `interface` devem ficar em arquivo de tipos do módulo, nomeado `<assunto>.types.ts` (§5.15), reutilizando contratos já existentes.
 5. Evitar `any`, casts sem fundamento, estados impossíveis e interfaces redundantes. Tipar dados de entrada, saída e erros conforme os contratos reais.
 6. Não usar `useMemo`, `useCallback` ou `React.memo` indiscriminadamente. Empregar quando houver cálculo custoso, identidade referencial relevante, filhos memoizados ou benefício demonstrável.
 7. Não suprimir regras de hooks nem remover dependências de efeitos para esconder renderizações. Corrigir o fluxo.
@@ -136,6 +136,7 @@ Estas regras se aplicam **a qualquer tela ou módulo React atual ou futuro**:
 |------------------|-----------------|---------|
 | Constantes: tabelas estáticas, textos fixos da página, listas de navegação, configurações de animação | `<assunto>.constants.ts` | `contato.constants.ts`, `conteudo.constants.ts` |
 | Componente React | `<NomeDoComponente>.tsx` (PascalCase) | `BotaoWhatsapp.tsx` |
+| Tipos e interfaces | `<assunto>.types.ts` | `aulas.types.ts`, `botaoWhatsapp.types.ts` |
 | Hook | `use<Assunto>.ts` ou `.tsx` | `useMenuCelular.ts` |
 | Operações técnicas genéricas | `<categoria>.utils.ts` (categoria em português, salvo termo técnico consagrado como `regex`) | `texto.utils.ts`, `regex.utils.ts` |
 | Regras e operações de um domínio | `<assunto>.service.ts` | `somDoViolao.service.ts` |
@@ -147,6 +148,7 @@ Estas regras se aplicam **a qualquer tela ou módulo React atual ou futuro**:
 | `src/constants/contato.ts` (a pasta diz "constante", o arquivo não) | `src/constants/contato.constants.ts` |
 | `src/domains/aulas/conteudo.ts` com os textos fixos da página | `src/domains/aulas/conteudo.constants.ts` |
 | Import que esconde o tipo: `from '../constants/contato'` | `from '../constants/contato.constants'` |
+| `src/domains/aulas/types.ts` (o nome não diz de que assunto são os tipos) | `src/domains/aulas/aulas.types.ts` |
 
 **Teste mental:** "lendo só o nome do arquivo, sem a pasta, dá para saber que ele guarda constantes?" Se não, falta o sufixo.
 
@@ -313,7 +315,7 @@ Integração com sistema de terceiro segue a **documentação oficial do fornece
 - [ ] Usei só `const`, sem `let`/`var`, comentários óbvios ou código morto?
 - [ ] Responsabilidades estão coesas; SOLID foi aplicado sem burocracia?
 - [ ] Cada arquivo criado, movido ou que perdeu o assunto mora na pasta que descreve o que ele é, e cada teste ao lado do código que testa?
-- [ ] Cada arquivo tem o sufixo do seu tipo (§5.15), por exemplo constantes em `*.constants.ts`, em qualquer pasta?
+- [ ] Cada arquivo tem o sufixo do seu tipo (§5.15) em qualquer pasta: `*.constants.ts`, `*.types.ts`, `*.utils.ts`, `*.service.ts`, `*.integracao.ts`?
 - [ ] Componentes React priorizam renderização; lógica complexa está em hooks; tipos estão fora dos componentes?
 - [ ] Não dupliquei contratos, dados, estado ou fonte de verdade?
 - [ ] Toda chamada a API externa que criei ou alterei segue a documentação oficial (rota, método, campos, códigos de resposta), com a seção citada, e nada nela vem de hipótese ou de log de campo?
