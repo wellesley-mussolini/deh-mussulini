@@ -5,7 +5,12 @@ import TituloRevelado from '../componentes/TituloRevelado'
 import fotoRetrato from '../../../assets/fotos/deh-retrato.jpg'
 import { entrarAoAparecer, revelarEmSequencia, surgirDeBaixo } from '../animacoes.constants'
 
-const textoDoSelo = 'Formada em Música pela UFMG ✦ '
+// No círculo, o fim do texto encosta no começo. O SVG descarta o espaço comum no fim (por isso
+// o espaço inquebrável), e o textLength reparte a folga só entre caracteres vizinhos: o espaço
+// de largura zero, invisível, cria o último vão para a emenda receber a mesma folga que os outros.
+const espacoInquebravel = String.fromCharCode(0xa0)
+const espacoDeLarguraZero = String.fromCharCode(0x200b)
+const textoDoSelo = `Formada em Música pela UFMG${espacoInquebravel}✦${espacoInquebravel}${espacoDeLarguraZero}`
 // Comprimento do círculo do selo (2π × 72): o texto é esticado para fechar a volta sem sobrar nem sobrepor.
 const circunferenciaDoSelo = 452
 
