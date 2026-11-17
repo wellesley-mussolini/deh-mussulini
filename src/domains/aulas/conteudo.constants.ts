@@ -25,6 +25,7 @@ export const diferenciais: readonly DiferencialDaAula[] = [
 ]
 
 export const destaques: readonly string[] = [
+  'Aula de violão para mulheres',
   'Aulas online',
   'A partir de 12 anos',
   'Do zero ao primeiro acorde',
@@ -82,9 +83,10 @@ export const duvidasFrequentes: readonly DuvidaFrequente[] = [
 ]
 
 export const resumoDasAulas =
-  'Aulas de violão online para quem tem zero ou pouco conhecimento, a partir de 12 anos, com ritmos brasileiros e internacionais e apostila de música brasileira cifrada.'
+  'Aulas de violão online para mulheres, para quem tem zero ou pouco conhecimento, a partir de 12 anos, com ritmos brasileiros e internacionais e apostila de música brasileira cifrada.'
 
 export const fatosDaAbertura: readonly string[] = [
+  'para mulheres',
   'online',
   'para iniciantes',
   'a partir de 12 anos',
