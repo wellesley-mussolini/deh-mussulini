@@ -91,7 +91,7 @@ export default function SobreADeh() {
               internacionais, com o apoio de uma apostila de música brasileira cifrada.
             </motion.p>
             <motion.div variants={surgirDeBaixo} className="mt-10">
-              <BotaoWhatsapp aparencia="tampo">Conversar com a Deh no WhatsApp</BotaoWhatsapp>
+              <BotaoWhatsapp aparencia="tampo" />
             </motion.div>
           </motion.div>
         </div>

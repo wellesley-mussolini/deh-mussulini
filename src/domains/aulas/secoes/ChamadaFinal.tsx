@@ -26,9 +26,7 @@ export default function ChamadaFinal() {
           Mande uma mensagem e combine sua primeira aula com a Deh.
         </motion.p>
         <motion.div variants={surgirDeBaixo} className="mt-10">
-          <BotaoWhatsapp aparencia="tampo" comBrilho>
-            Chamar a Deh no WhatsApp
-          </BotaoWhatsapp>
+          <BotaoWhatsapp aparencia="tampo" comBrilho />
         </motion.div>
       </motion.div>
     </section>

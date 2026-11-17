@@ -1,4 +1,4 @@
-import { MessageCircle } from 'lucide-react'
+import IconeWhatsapp from './icones/IconeWhatsapp'
 import { linkDoWhatsapp } from '../constants/contato.constants'
 import type { AparenciaDoBotao, PropriedadesDoBotaoWhatsapp, TamanhoDoBotao } from './botaoWhatsapp.types'
 
@@ -12,8 +12,13 @@ const medidasPorTamanho: Record<TamanhoDoBotao, string> = {
   grande: 'gap-3 px-7 py-4 text-lg',
 }
 
+// Uma ação, um nome: o botão é dono do rótulo, e nenhuma seção inventa outro nome para a mesma conversa.
+const rotulosPorTamanho: Record<TamanhoDoBotao, string> = {
+  compacto: 'WhatsApp',
+  grande: 'Chamar a Deh no WhatsApp',
+}
+
 export default function BotaoWhatsapp({
-  children,
   aparencia = 'roseta',
   tamanho = 'grande',
   comBrilho = false,
@@ -23,6 +28,7 @@ export default function BotaoWhatsapp({
       href={linkDoWhatsapp}
       target="_blank"
       rel="noopener noreferrer"
+      data-chamada-whatsapp
       className={`group relative isolate inline-flex items-center overflow-hidden rounded-full font-semibold shadow-lg shadow-jacaranda/20 transition-[background-color,transform] duration-300 hover:-translate-y-0.5 active:translate-y-0 ${coresPorAparencia[aparencia]} ${medidasPorTamanho[tamanho]}`}
     >
       {comBrilho && (
@@ -31,11 +37,8 @@ export default function BotaoWhatsapp({
           className="pointer-events-none absolute inset-y-0 left-0 -z-10 w-1/3 animate-brilho bg-gradient-to-r from-transparent via-white/35 to-transparent"
         />
       )}
-      <MessageCircle
-        aria-hidden="true"
-        className="size-[1.2em] transition-transform duration-300 group-hover:-rotate-12"
-      />
-      {children}
+      <IconeWhatsapp className="size-[1.2em] transition-transform duration-300 group-hover:-rotate-12" />
+      {rotulosPorTamanho[tamanho]}
     </a>
   )
 }
