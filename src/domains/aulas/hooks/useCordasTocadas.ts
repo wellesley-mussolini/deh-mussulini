@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { cordasDoViolao, duracaoDaNota } from '../violao.constants'
 import { somDoViolaoService } from '../services/somDoViolao.service'
-import type { CordaDoViolao, NotaNoAr } from '../types'
+import type { CordaDoViolao, NotaNoAr } from '../aulas.types'
 
 export function useCordasTocadas() {
   const contextoDeAudio = useRef<AudioContext | null>(null)

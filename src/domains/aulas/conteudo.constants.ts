@@ -1,5 +1,5 @@
 import { BookOpen, MonitorPlay, Music, Sprout } from 'lucide-react'
-import type { DiferencialDaAula, DuvidaFrequente, EtapaDoCaminho } from './types'
+import type { DiferencialDaAula, DuvidaFrequente, EtapaDoCaminho } from './aulas.types'
 
 export const diferenciais: readonly DiferencialDaAula[] = [
   {

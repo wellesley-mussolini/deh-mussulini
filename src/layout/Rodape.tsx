@@ -17,6 +17,14 @@ export default function Rodape() {
           >
             WhatsApp {contatoDaDeh.telefoneWhatsapp}
           </a>
+          <a
+            href={contatoDaDeh.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline-offset-4 hover:text-tampo-claro hover:underline"
+          >
+            Instagram @deh.muss
+          </a>
           <p className="text-traste">© {new Date().getFullYear()} Deh Mussulini</p>
         </div>
       </div>

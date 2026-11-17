@@ -1,6 +1,6 @@
 import { useEffect, type MouseEvent } from 'react'
 import { useAnimate, useReducedMotion } from 'motion/react'
-import type { PropriedadesDaCordaVibrante } from '../types'
+import type { PropriedadesDaCordaVibrante } from '../aulas.types'
 
 const alturaDoDesenho = 40
 const larguraDoDesenho = 1000

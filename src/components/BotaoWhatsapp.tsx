@@ -1,6 +1,6 @@
 import { MessageCircle } from 'lucide-react'
 import { linkDoWhatsapp } from '../constants/contato.constants'
-import type { AparenciaDoBotao, PropriedadesDoBotaoWhatsapp, TamanhoDoBotao } from './types'
+import type { AparenciaDoBotao, PropriedadesDoBotaoWhatsapp, TamanhoDoBotao } from './botaoWhatsapp.types'
 
 const coresPorAparencia: Record<AparenciaDoBotao, string> = {
   roseta: 'bg-roseta text-tampo-claro hover:bg-roseta-escuro',

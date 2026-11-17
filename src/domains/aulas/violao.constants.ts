@@ -1,4 +1,4 @@
-import type { CordaDoViolao } from './types'
+import type { CordaDoViolao } from './aulas.types'
 
 // Afinação padrão, da corda mais grossa (6ª) para a mais fina (1ª).
 export const cordasDoViolao: readonly CordaDoViolao[] = [

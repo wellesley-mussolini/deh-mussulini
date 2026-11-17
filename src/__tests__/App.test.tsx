@@ -13,7 +13,7 @@ describe('site das aulas de violão', () => {
     expect(chamadasWhatsapp.length).toBeGreaterThanOrEqual(3)
     chamadasWhatsapp.forEach((chamada) => {
       const destino = new URL(chamada.getAttribute('href') ?? '')
-      expect(destino.origin + destino.pathname).toBe('https://wa.me/553171323439')
+      expect(destino.origin + destino.pathname).toBe('https://wa.me/5531971323439')
       expect(destino.searchParams.get('text')).toBe(contatoDaDeh.mensagemPronta)
       expect(chamada).toHaveAttribute('target', '_blank')
       expect(chamada.getAttribute('rel')).toContain('noopener')
@@ -39,6 +39,16 @@ describe('site das aulas de violão', () => {
     expect(screen.getByRole('heading', { name: 'Como são as aulas' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Prazer, Deh Mussulini' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Do primeiro acorde às primeiras músicas' })).toBeInTheDocument()
+  })
+
+  test('o Instagram da Deh abre o perfil @deh.muss em nova aba', () => {
+    render(<App />)
+
+    const linkDoInstagram = screen.getByRole('link', { name: /instagram/i })
+
+    expect(linkDoInstagram).toHaveAttribute('href', 'https://www.instagram.com/deh.muss/')
+    expect(linkDoInstagram).toHaveAttribute('target', '_blank')
+    expect(linkDoInstagram.getAttribute('rel')).toContain('noopener')
   })
 
   test('cada link da navegação leva a uma seção que existe na página', () => {

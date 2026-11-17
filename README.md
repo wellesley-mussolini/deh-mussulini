@@ -76,7 +76,7 @@ npm run dev        # site em http://localhost:5173/deh-mussulini/
 
 | Quero mudar | Arquivo |
 |---|---|
-| Número do WhatsApp ou mensagem pronta | [`src/constants/contato.constants.ts`](src/constants/contato.constants.ts) |
+| Número do WhatsApp, Instagram ou mensagem pronta | [`src/constants/contato.constants.ts`](src/constants/contato.constants.ts) |
 | Textos das aulas, fatos em destaque, etapas e dúvidas | [`src/domains/aulas/conteudo.constants.ts`](src/domains/aulas/conteudo.constants.ts) |
 | Itens do menu | [`src/constants/navegacao.constants.ts`](src/constants/navegacao.constants.ts) |
 | Fotos | [`src/assets/fotos/`](src/assets/fotos) (substitua mantendo o nome do arquivo) |
@@ -86,18 +86,22 @@ npm run dev        # site em http://localhost:5173/deh-mussulini/
 
 ```
 src/
-├── App.tsx                    # monta a casca e a página
-├── constants/                 # contato da Deh e itens do menu (*.constants.ts)
-├── components/BotaoWhatsapp   # botão de contato usado em toda a página
-├── layout/                    # cabeçalho, rodapé e botão flutuante do WhatsApp
-├── utils/linkWhatsapp.ts      # monta o link wa.me com a mensagem pronta
+├── App.tsx                        # monta a casca e a página
+├── constants/                     # contato da Deh (WhatsApp e Instagram) e itens do menu
+├── components/                    # BotaoWhatsapp, usado em toda a página
+├── integracoes/                   # whatsapp.integracao.ts: link wa.me com a mensagem pronta
+├── layout/                        # cabeçalho, rodapé e botão flutuante do WhatsApp
+├── utils/                         # texto.utils.ts: operações técnicas genéricas
 └── domains/aulas/
-    ├── PaginaAulas.tsx        # ordem das seções
-    ├── secoes/                # abertura, aulas, destaques, sobre, caminho, dúvidas, chamada final
-    ├── componentes/           # escala do violão, corda que vibra, fatos em destaque, título revelado
-    ├── utils/                 # síntese da nota da corda
-    ├── animacoes.constants.ts # curvas e variantes de animação compartilhadas
-    └── conteudo.constants.ts  # todos os textos da página
+    ├── PaginaAulas.tsx            # ordem das seções
+    ├── secoes/                    # abertura, aulas, destaques, sobre, caminho, dúvidas, chamada final
+    ├── componentes/               # escala do violão, corda que vibra, fatos em destaque, título revelado
+    ├── hooks/                     # useCordasTocadas (som e notas), useFatoDaVez (alternância)
+    ├── services/                  # somDoViolao.service.ts: síntese da nota da corda
+    ├── conteudo.constants.ts      # todos os textos da página
+    ├── violao.constants.ts        # cordas na afinação padrão e duração da nota
+    ├── animacoes.constants.ts     # curvas e variantes de animação
+    └── aulas.types.ts             # tipos do domínio
 ```
 
 As regras de código do projeto estão em [`AGENTS.md`](AGENTS.md), incluindo o sufixo obrigatório por tipo de arquivo (constantes em `*.constants.ts`).

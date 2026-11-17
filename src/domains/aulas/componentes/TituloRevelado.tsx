@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { motion } from 'motion/react'
 import { curvaSuave } from '../animacoes.constants'
-import type { PropriedadesDoTituloRevelado } from '../types'
+import type { PropriedadesDoTituloRevelado } from '../aulas.types'
 
 const intervaloEntrePalavras = 0.08
 
