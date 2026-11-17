@@ -118,12 +118,13 @@ Estas regras se aplicam **a qualquer tela ou módulo React atual ou futuro**:
 
 | Pasta | Guarda | Não guarda |
 |-------|--------|------------|
-| `src/domains/<dominio>/` | Tudo de um domínio: páginas, componentes, hooks, services, types, utils e os `__tests__` deles | Código usado por mais de um domínio |
+| `src/domains/<dominio>/` | Tudo de um domínio: páginas, componentes, hooks, services (`*.service.ts`), constantes, types e os `__tests__` deles | Código usado por mais de um domínio; pasta `utils/` (operação que conhece o domínio é service, §5.16) |
 | `src/components/` | Componentes reutilizados por mais de um domínio (`ui/` = design system) | Componente de um domínio só |
 | `src/hooks/` | Hooks (`use*`) reutilizados por mais de um domínio | Hook de um domínio só; função que não é hook |
 | `src/context/` | Contextos da Context API (`createContext` + provider) | Estado local, regra de negócio solta |
 | `src/types/` | Tipos compartilhados entre domínios | Tipo de um domínio só |
-| `src/utils/` | Funções puras compartilhadas | Hook, componente, regra de um domínio |
+| `src/utils/` | Operações técnicas genéricas, agrupadas por categoria em `<categoria>.utils.ts` (§5.16) | Regra de negócio, decisão, entidade do domínio, integração com sistema externo, hook, componente |
+| `src/integracoes/` | Conversa com sistema ou protocolo externo (montar link `wa.me`, chamar API de terceiro), em `<sistema>.integracao.ts` | Regra de negócio de quando e por que integrar |
 | `src/constants/` | Tabelas estáticas do app (contatos, navegação) e a leitura delas | Configuração de ambiente, regra de um domínio |
 | `src/config/` | Configuração de ambiente e execução (variáveis) | Regra de negócio, teste de outro assunto |
 | `src/layout/` | A casca da aplicação (cabeçalho, rodapé) | Seção de domínio |
@@ -136,6 +137,9 @@ Estas regras se aplicam **a qualquer tela ou módulo React atual ou futuro**:
 | Constantes: tabelas estáticas, textos fixos da página, listas de navegação, configurações de animação | `<assunto>.constants.ts` | `contato.constants.ts`, `conteudo.constants.ts` |
 | Componente React | `<NomeDoComponente>.tsx` (PascalCase) | `BotaoWhatsapp.tsx` |
 | Hook | `use<Assunto>.ts` ou `.tsx` | `useMenuCelular.ts` |
+| Operações técnicas genéricas | `<categoria>.utils.ts` (categoria em português, salvo termo técnico consagrado como `regex`) | `texto.utils.ts`, `regex.utils.ts` |
+| Regras e operações de um domínio | `<assunto>.service.ts` | `somDoViolao.service.ts` |
+| Integração com sistema externo | `<sistema>.integracao.ts` | `whatsapp.integracao.ts` |
 | Teste | `<arquivoTestado>.test.ts(x)`, em `__tests__/` ao lado do código | `linkWhatsapp.test.ts` |
 
 | Proibido | Correto |
@@ -145,6 +149,45 @@ Estas regras se aplicam **a qualquer tela ou módulo React atual ou futuro**:
 | Import que esconde o tipo: `from '../constants/contato'` | `from '../constants/contato.constants'` |
 
 **Teste mental:** "lendo só o nome do arquivo, sem a pasta, dá para saber que ele guarda constantes?" Se não, falta o sufixo.
+
+16. **Utils executa operação; o domínio decide.** Separar a operação técnica genérica da regra de negócio é o que permite levar os utilitários para outro repositório sem arrastar o domínio junto.
+
+- **`src/utils/` é agnóstico.** Só operação técnica, genérica e determinística: transformar texto, extrair dígitos, formatar data, operar sobre lista ou objeto, regex, conversão de formato, codificação, cálculo genérico. Não conhece entidade, regra, permissão, estado nem fluxo da aplicação. Não decide se algo pode acontecer, não orquestra, não chama sistema externo e não importa nada de `domains/`, `integracoes/` ou componentes. Proteger a própria operação contra entrada tecnicamente impossível é permitido; validar regra do domínio, não.
+- **Agrupar por categoria técnica, num objeto.** Um arquivo por categoria (`texto.utils.ts`, `data.utils.ts`, `lista.utils.ts`, `regex.utils.ts`), nunca um arquivo por função. Cada arquivo exporta **um objeto agrupador** em camelCase, `<categoria>Utils`, com métodos de verbo concreto + objeto. O sufixo `Utils` do agrupador é o padrão do projeto, como o `.constants.ts` no arquivo, e não o sufixo técnico proibido na §2.
+
+  ```ts
+  // src/utils/texto.utils.ts
+  export const textoUtils = {
+    extrairDigitos: (texto: string) => texto.replace(/\D/g, ''),
+    removerEspacosDuplicados: (texto: string) => texto.replace(/\s+/g, ' ').trim(),
+  }
+
+  // no consumidor
+  textoUtils.extrairDigitos(telefone)
+  ```
+- **Sem barril:** não criar `utils/index.ts` que só reexporta (§1.2). O consumidor importa do arquivo da categoria.
+- **Objeto ou classe:** objeto agrupador para operação pura e sem estado. Classe só quando houver estado, dependência injetada ou ciclo de vida real (§4). Não criar classe para empacotar função pura.
+- **Regra de negócio mora no domínio:** em `src/domains/<dominio>/`, como hook (quando envolve estado ou ciclo de vida do React) ou como `<assunto>.service.ts` (operação do domínio sem React). O service decide quando usar um util, com que dados e o que fazer com o resultado. O util não conhece quem o usa.
+- **Integração com sistema externo** (protocolo, URL, API de terceiro) mora em `src/integracoes/<sistema>.integracao.ts`, nem em utils nem espalhada pelo domínio. Ela segue a documentação oficial do fornecedor (§6).
+- **Reutilizável não é o mesmo que util.** Uma função usada em vários lugares só é util se for genuinamente independente do domínio.
+
+| Operação | Onde mora |
+|----------|-----------|
+| Extrair só os dígitos de um texto | `textoUtils` em `src/utils/texto.utils.ts` |
+| Formatar uma data | `dataUtils` em `src/utils/data.utils.ts` |
+| Montar o link `wa.me` com mensagem | `whatsappIntegracao` em `src/integracoes/whatsapp.integracao.ts` |
+| Sintetizar a nota de uma corda do violão | `somDoViolaoService` em `src/domains/aulas/services/somDoViolao.service.ts` |
+| Decidir quais etapas do caminho estão acesas | hook ou service do domínio `aulas` |
+
+| Proibido | Correto |
+|----------|---------|
+| `src/utils/linkWhatsapp.ts` (conhece o protocolo do WhatsApp) | `src/integracoes/whatsapp.integracao.ts`, usando `textoUtils.extrairDigitos` |
+| `src/domains/aulas/utils/tocarNotaDeViolao.ts` (conhece o violão) | `src/domains/aulas/services/somDoViolao.service.ts` |
+| Um arquivo por função: `extrairDigitos.ts`, `removerEspacos.ts` | Um arquivo por categoria: `texto.utils.ts` com `textoUtils` |
+| `export function extrairDigitos` solta, chamada como `extrairDigitos(valor)` | `textoUtils.extrairDigitos(valor)` |
+| `utils/index.ts` reexportando todas as categorias | Import direto de `texto.utils.ts` |
+
+**Teste mental, antes de pôr algo em `src/utils/`:** "essa operação funcionaria em qualquer outro projeto, sem conhecer nenhuma regra, entidade ou contexto deste?" Se sim, é util. Se depende do domínio, é service ou hook do domínio. Se fala com um sistema externo, é integração.
 
 ## 6. Contratos, schemas, enums e integrações
 
