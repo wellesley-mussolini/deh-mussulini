@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="carregando">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,8 +24,143 @@
     <meta property="og:image:height" content="640" />
     <meta property="og:image:alt" content="Retrato de Deh Muss sorrindo" />
     <meta name="twitter:card" content="summary" />
+
+    <!--
+      Tela de carregamento: o tampo do violão com a boca, a roseta e as seis cordas, e a palheta dedilhando.
+      Fica inline para aparecer antes do JS e do CSS do site. As cores repetem os tokens do @theme
+      (src/index.css) porque o CSS do site ainda não chegou. Só transform e opacity animam: o celular
+      compõe na GPU sem repintar. Os nomes entrar-na-boca e sumir-carregamento são lidos por
+      src/constants/carregamento.constants.ts.
+    -->
+    <style>
+      html.carregando body { overflow: hidden; }
+      #carregamento {
+        --boca: min(44vmin, 220px);
+        position: fixed; inset: 0; z-index: 100; overflow: hidden;
+        background: radial-gradient(circle at 50% 46%, #f8e8c4 0%, #f1d7a0 52%, #e3c286 100%);
+      }
+      #carregamento .c-texto {
+        position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+      }
+      #carregamento .c-boca, #carregamento .c-palheta {
+        position: absolute; left: 50%; top: 50%;
+      }
+      #carregamento .c-boca {
+        width: var(--boca); height: var(--boca);
+        margin: calc(var(--boca) / -2) 0 0 calc(var(--boca) / -2);
+        border-radius: 50%;
+        background: #2e1a14;
+        box-shadow: inset 0 0 calc(var(--boca) * 0.18) rgba(0, 0, 0, 0.65);
+        animation: respirar 2.8s ease-in-out infinite;
+      }
+      #carregamento .c-boca::before, #carregamento .c-boca::after {
+        content: ''; position: absolute; border-radius: 50%;
+      }
+      #carregamento .c-boca::before {
+        inset: calc(var(--boca) * -0.09);
+        border: calc(var(--boca) * 0.035) dotted #1f6e57;
+      }
+      #carregamento .c-boca::after {
+        inset: calc(var(--boca) * -0.17);
+        border: 3px solid #8a4b2a;
+        box-shadow: 0 0 0 calc(var(--boca) * 0.025) #f1d7a0, 0 0 0 calc(var(--boca) * 0.04) #8a4b2a;
+      }
+      #carregamento .c-cordas {
+        position: absolute; top: 0; bottom: 0; left: 50%;
+        width: calc(var(--boca) * 0.8); margin-left: calc(var(--boca) * -0.4);
+        display: flex; justify-content: space-between;
+      }
+      #carregamento .c-cordas i {
+        display: block; height: 100%;
+        box-shadow: 1px 0 0 rgba(46, 26, 20, 0.25);
+        animation: vibrar 1.4s linear infinite;
+        animation-delay: calc(0.076s + var(--corda) * 0.0815s);
+      }
+      #carregamento .c-palheta {
+        width: calc(var(--boca) * 0.26); height: calc(var(--boca) * 0.26);
+        margin: calc(var(--boca) * -0.13) 0 0 calc(var(--boca) * -0.13);
+        animation: dedilhar 1.4s infinite;
+      }
+      #carregamento.revelando .c-palheta {
+        animation: dedilhar 1.4s infinite, sumir-palheta 0.3s ease-in forwards;
+      }
+      #carregamento.revelando .c-cordas {
+        animation: abrir-cordas 0.6s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+      }
+      #carregamento.revelando .c-boca {
+        animation: entrar-na-boca 1.05s cubic-bezier(0.7, 0, 0.25, 1) forwards;
+      }
+      #carregamento.sumindo {
+        animation: sumir-carregamento 0.6s ease forwards;
+      }
+      @keyframes respirar {
+        50% { transform: scale(1.035); }
+      }
+      @keyframes vibrar {
+        0%, 19%, 100% { transform: translateX(0); }
+        3% { transform: translateX(3px); }
+        6% { transform: translateX(-2.4px); }
+        9% { transform: translateX(1.8px); }
+        12% { transform: translateX(-1.2px); }
+        15% { transform: translateX(0.7px); }
+      }
+      @keyframes dedilhar {
+        0%, 100% {
+          transform: translate(calc(var(--boca) * -0.55), calc(var(--boca) * 0.05)) rotate(-25deg);
+          animation-timing-function: linear;
+        }
+        40% {
+          transform: translate(calc(var(--boca) * 0.55), calc(var(--boca) * -0.02)) rotate(10deg);
+          animation-timing-function: ease-out;
+        }
+        60% {
+          transform: translate(calc(var(--boca) * 0.62), calc(var(--boca) * -0.38)) rotate(30deg) scale(0.9);
+          animation-timing-function: ease-in-out;
+        }
+        85% {
+          transform: translate(calc(var(--boca) * -0.62), calc(var(--boca) * -0.38)) rotate(-35deg) scale(0.9);
+          animation-timing-function: ease-in;
+        }
+      }
+      @keyframes sumir-palheta { to { opacity: 0; } }
+      @keyframes abrir-cordas { to { opacity: 0; transform: scaleX(3.2); } }
+      @keyframes entrar-na-boca {
+        0% { transform: scale(1); }
+        22% { transform: scale(0.86); }
+        100% { transform: scale(14); }
+      }
+      @keyframes sumir-carregamento { to { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) {
+        #carregamento .c-boca, #carregamento .c-cordas i, #carregamento .c-palheta { animation: none; }
+        #carregamento.revelando .c-palheta, #carregamento.revelando .c-cordas { animation: none; opacity: 0; }
+        #carregamento.revelando .c-boca { animation: entrar-na-boca 0.01s linear forwards; }
+        #carregamento.sumindo { animation-duration: 0.25s; }
+      }
+    </style>
   </head>
   <body>
+    <div id="carregamento" role="status">
+      <p class="c-texto">Carregando o site da Deh Muss</p>
+      <div class="c-boca" aria-hidden="true"></div>
+      <div class="c-cordas" aria-hidden="true">
+        <i style="--corda: 0; width: 3px; background: #8d8273"></i>
+        <i style="--corda: 1; width: 2.6px; background: #8d8273"></i>
+        <i style="--corda: 2; width: 2.2px; background: #8d8273"></i>
+        <i style="--corda: 3; width: 1.8px; background: #b9ab94"></i>
+        <i style="--corda: 4; width: 1.5px; background: #b9ab94"></i>
+        <i style="--corda: 5; width: 1.2px; background: #b9ab94"></i>
+      </div>
+      <svg class="c-palheta" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M34 62C22 52 8 36 8 22 8 12 19 6 34 6s26 6 26 16c0 14-14 30-26 40Z" fill="#2e1a14" opacity="0.35" />
+        <path
+          d="M32 60C20 50 6 34 6 20 6 10 17 4 32 4s26 6 26 16c0 14-14 30-26 40Z"
+          fill="#f8e8c4"
+          stroke="#8a4b2a"
+          stroke-width="3"
+        />
+        <path d="M22 22c2-5 7-8 10-8" stroke="#1f6e57" stroke-width="4" stroke-linecap="round" fill="none" />
+      </svg>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

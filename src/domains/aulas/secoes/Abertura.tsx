@@ -4,7 +4,7 @@ import { Hand } from 'lucide-react'
 import BotaoWhatsapp from '../../../components/BotaoWhatsapp'
 import EscalaDoViolao from '../componentes/EscalaDoViolao'
 import FatosEmDestaque from '../componentes/FatosEmDestaque'
-import fotoNoPalco from '../../../assets/fotos/deh-no-palco-luzes.jpg'
+import { fotoDaAbertura } from '../fotos.constants'
 import { curvaSuave } from '../animacoes.constants'
 
 const nomeDaProfessora = 'Deh Muss'
@@ -35,7 +35,7 @@ export default function Abertura() {
         className="absolute inset-y-0 right-0 -z-10 w-full md:w-[62%] md:[mask-image:linear-gradient(to_right,transparent_0%,black_55%)]"
       >
         <motion.img
-          src={fotoNoPalco}
+          src={fotoDaAbertura}
           alt="Deh Muss cantando e tocando violão no palco, sob luzes amarelas"
           width={1200}
           height={1600}

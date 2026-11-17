@@ -1,8 +1,9 @@
 import { describe, expect, test, vi } from 'vitest'
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { act, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../App'
 import { contatoDaDeh } from '../constants/contato.constants'
+import { animacaoDeEntradaNaBoca, idDaTelaDeCarregamento } from '../constants/carregamento.constants'
 
 describe('site das aulas de violão', () => {
   test('toda chamada de WhatsApp abre a conversa com a Deh em nova aba, com a mensagem pronta', () => {
@@ -159,5 +160,28 @@ describe('site das aulas de violão', () => {
     const escalaDoViolao = screen.getByRole('group', { name: /cordas do violão/i })
     expect(within(escalaDoViolao).getByText('♪ Mi grave')).toBeInTheDocument()
     expect(within(escalaDoViolao).getByText('♪ Lá')).toBeInTheDocument()
+  })
+
+  test('a abertura só entra em cena quando a boca do violão termina de abrir', async () => {
+    const telaDeCarregamento = document.createElement('div')
+    telaDeCarregamento.id = idDaTelaDeCarregamento
+    document.body.append(telaDeCarregamento)
+    Object.defineProperty(document, 'fonts', { configurable: true, value: { ready: Promise.resolve() } })
+    vi.stubGlobal('Image', class { src = ''; decode = () => Promise.resolve() })
+    const relogioDaPagina = vi.spyOn(performance, 'now').mockReturnValue(Number.MAX_SAFE_INTEGER)
+
+    render(<App />)
+
+    expect(screen.queryByRole('heading', { level: 1, name: 'Deh Muss' })).not.toBeInTheDocument()
+    await waitFor(() => expect(telaDeCarregamento).toHaveClass('revelando'))
+    // O jsdom não implementa AnimationEvent: o evento do navegador é recriado com o nome da animação.
+    act(() => {
+      telaDeCarregamento.dispatchEvent(
+        Object.assign(new Event('animationend', { bubbles: true }), { animationName: animacaoDeEntradaNaBoca }),
+      )
+    })
+    expect(screen.getByRole('heading', { level: 1, name: 'Deh Muss' })).toBeInTheDocument()
+    telaDeCarregamento.remove()
+    relogioDaPagina.mockRestore()
   })
 })
