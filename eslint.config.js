@@ -4,6 +4,11 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 
+// AGENTS.md §8: o Motion só entrega à GPU opacity, filter, clipPath e transform inteiro; x, y, scale e
+// rotate soltos rodam no JS a cada quadro e travam celular fraco.
+const animacaoNaGpu =
+  "Anime 'transform' inteiro (ex.: transform: 'translateY(16px) rotate(8deg)'), não x/y/scale/rotate soltos (AGENTS.md §8)."
+
 export default tseslint.config(
   { ignores: ['dist', 'coverage'] },
   {
@@ -34,6 +39,20 @@ export default tseslint.config(
           selector: "VariableDeclaration[kind!='const']",
           message: 'Use só const (AGENTS.md §1.4): valor que muda vira nova constante, função ou reduce.',
         },
+        {
+          selector:
+            'JSXAttribute[name.name=/^(initial|animate|exit|whileInView|whileHover|whileTap)$/] Property[key.name=/^(x|y|scale|scaleX|scaleY|rotate)$/]',
+          message: animacaoNaGpu,
+        },
+      ],
+    },
+  },
+  {
+    files: ['**/animacoes.constants.ts'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        { selector: 'Property[key.name=/^(x|y|scale|scaleX|scaleY|rotate)$/]', message: animacaoNaGpu },
       ],
     },
   },

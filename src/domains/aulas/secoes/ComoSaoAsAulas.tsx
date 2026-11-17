@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'motion/react'
-import fotoNoSesc from '../../../assets/fotos/deh-no-palco-sesc.jpg'
+import fotoNoSesc from '../../../assets/fotos/deh-no-palco-sesc.webp'
 import TituloRevelado from '../componentes/TituloRevelado'
 import { diferenciais } from '../conteudo.constants'
 import { entrarAoAparecer, girarParaDentro, revelarEmSequencia, surgirDaDireita, surgirDeBaixo } from '../animacoes.constants'

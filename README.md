@@ -112,4 +112,4 @@ Cada pull request roda lint, testes e build. O merge na `prod` publica o site no
 
 ## Fotos
 
-As fotos da Deh ficam em [`src/assets/fotos/`](src/assets/fotos): `deh-no-palco-luzes.jpg` (abertura), `deh-no-palco-sesc.jpg` (como são as aulas) e `deh-retrato.jpg` (sobre a Deh e prévia de compartilhamento).
+As fotos da Deh ficam em [`src/assets/fotos/`](src/assets/fotos): `deh-no-palco-luzes.webp` (abertura), `deh-no-palco-sesc.webp` (como são as aulas) e `deh-retrato.webp` (sobre a Deh; a prévia de compartilhamento usa `public/compartilhamento.jpg`, em JPEG porque nem todo app lê WebP na prévia).

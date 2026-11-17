@@ -243,6 +243,13 @@ Integração com sistema de terceiro segue a **documentação oficial do fornece
 - Carregar dados no momento correto; usar busca com debounce, paginação ou virtualização somente quando a escala justificar.
 - Usar memoização **seletiva**, não decorativa.
 - Não adotar polling, timers, retries ou estados adicionais para mascarar erro de arquitetura.
+- **Animação roda na GPU, não no JS.** O navegador compõe na GPU, fora da thread principal, só `transform` e `opacity` (e, no Motion, também `filter` e `clipPath`). No Motion, anime o `transform` inteiro; `x`, `y`, `scale` e `rotate` soltos são calculados no JS a cada quadro e engasgam celular fraco. Animação infinita (giro, pulso, letreiro) só com `transform`/`opacity`: em CSS (`@keyframes` ou `animate-*` do Tailwind) ou no Motion com `transform` inteiro; nunca `repeat: Infinity` em `x/y/scale/rotate`, que ocupa a thread principal enquanto a página estiver aberta. Filtro (`drop-shadow`, `blur`) não fica num pai cujos filhos se movem: o navegador refaz o filtro a cada quadro. O ESLint barra `x/y/scale/rotate` nas props de animação no CI. A exceção é o valor ligado à rolagem (`style={{ y: progresso }}`), que só existe no JS.
+
+| Proibido | Correto |
+|----------|---------|
+| `animate={{ y: 0, rotate: 0 }}` | `animate={{ transform: 'translateY(0px) rotate(0deg)' }}` |
+| `animate={{ rotate: 360 }}` com `repeat: Infinity` | `className="animate-spin [animation-duration:22s]"` ou `animate={{ transform: 'rotate(360deg)' }}` |
+| `drop-shadow` no título cujas letras animam | `text-shadow` no título |
 
 ## 9. Validação, erros e fallback
 
@@ -317,6 +324,7 @@ Integração com sistema de terceiro segue a **documentação oficial do fornece
 - [ ] Cada arquivo criado, movido ou que perdeu o assunto mora na pasta que descreve o que ele é, e cada teste ao lado do código que testa?
 - [ ] Cada arquivo tem o sufixo do seu tipo (§5.15) em qualquer pasta: `*.constants.ts`, `*.types.ts`, `*.utils.ts`, `*.service.ts`, `*.integracao.ts`?
 - [ ] Componentes React priorizam renderização; lógica complexa está em hooks; tipos estão fora dos componentes?
+- [ ] Animações usam `transform`/`opacity` (no Motion, `transform` inteiro), sem `x/y/scale/rotate` soltos nem filtro num pai de elementos que se movem (§8)?
 - [ ] Não dupliquei contratos, dados, estado ou fonte de verdade?
 - [ ] Toda chamada a API externa que criei ou alterei segue a documentação oficial (rota, método, campos, códigos de resposta), com a seção citada, e nada nela vem de hipótese ou de log de campo?
 - [ ] Nenhuma mudança quebre consumidores internos ou externos silenciosamente?

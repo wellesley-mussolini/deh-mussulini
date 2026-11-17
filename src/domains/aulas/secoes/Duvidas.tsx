@@ -36,7 +36,7 @@ export default function Duvidas() {
                   {duvida.pergunta}
                   <motion.span
                     aria-hidden="true"
-                    animate={{ rotate: estaAberta ? 45 : 0 }}
+                    animate={{ transform: estaAberta ? 'rotate(45deg)' : 'rotate(0deg)' }}
                     transition={{ duration: 0.3, ease: curvaSuave }}
                     className={`grid size-10 shrink-0 place-items-center rounded-full transition-colors duration-300 ${
                       estaAberta ? 'bg-roseta text-tampo-claro' : 'bg-tampo text-jacaranda'

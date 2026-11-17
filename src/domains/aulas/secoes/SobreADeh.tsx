@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'motion/react'
 import BotaoWhatsapp from '../../../components/BotaoWhatsapp'
 import TituloRevelado from '../componentes/TituloRevelado'
-import fotoRetrato from '../../../assets/fotos/deh-retrato.jpg'
+import fotoRetrato from '../../../assets/fotos/deh-retrato.webp'
 import { entrarAoAparecer, revelarEmSequencia, surgirDeBaixo } from '../animacoes.constants'
 
 // No círculo, o fim do texto encosta no começo. O SVG descarta o espaço comum no fim (por isso
@@ -26,17 +26,14 @@ export default function SobreADeh() {
     <section ref={secao} id="sobre" data-fundo="escuro" className="overflow-hidden bg-jacaranda py-24 text-tampo-claro sm:py-32">
       <div className="mx-auto grid max-w-6xl items-center gap-16 px-4 sm:px-6 md:grid-cols-2">
         <div className="relative mx-auto aspect-square w-full max-w-md">
-          <motion.div
+          {/* Giros infinitos em CSS: o navegador compõe na GPU, sem ocupar a thread principal a cada quadro. */}
+          <div
             aria-hidden="true"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 80, repeat: Infinity, ease: 'linear' }}
-            className="absolute inset-0 rounded-full border-[10px] border-dotted border-tampo/40"
+            className="absolute inset-0 animate-spin rounded-full border-[10px] border-dotted border-tampo/40 [animation-duration:80s]"
           />
-          <motion.div
+          <div
             aria-hidden="true"
-            animate={{ rotate: -360 }}
-            transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
-            className="absolute inset-[6%] rounded-full border-[6px] border-dashed border-roseta"
+            className="absolute inset-[6%] animate-spin rounded-full border-[6px] border-dashed border-roseta [animation-direction:reverse] [animation-duration:60s]"
           />
           <div className="absolute inset-[12%] overflow-hidden rounded-full border-4 border-tampo/70 shadow-2xl shadow-black/40">
             <motion.img
@@ -52,18 +49,13 @@ export default function SobreADeh() {
 
           <motion.div
             aria-hidden="true"
-            initial={{ scale: 0, rotate: -120 }}
-            whileInView={{ scale: 1, rotate: 0 }}
+            initial={{ transform: 'scale(0) rotate(-120deg)' }}
+            whileInView={{ transform: 'scale(1) rotate(0deg)' }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ type: 'spring', stiffness: 140, damping: 12, delay: 0.3 }}
             className="absolute -right-2 -bottom-2 size-32 sm:right-0 sm:bottom-0 sm:size-36"
           >
-            <motion.svg
-              viewBox="0 0 200 200"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
-              className="size-full drop-shadow-xl"
-            >
+            <svg viewBox="0 0 200 200" className="size-full animate-spin drop-shadow-xl [animation-duration:22s]">
               <defs>
                 <path id="circulo-do-selo" d="M100,100 m-72,0 a72,72 0 1,1 144,0 a72,72 0 1,1 -144,0" />
               </defs>
@@ -73,7 +65,7 @@ export default function SobreADeh() {
                   {textoDoSelo}
                 </textPath>
               </text>
-            </motion.svg>
+            </svg>
             <span className="absolute inset-0 grid place-items-center font-titulo text-2xl text-tampo-claro sm:text-3xl">
               UFMG
             </span>

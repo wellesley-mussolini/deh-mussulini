@@ -40,8 +40,8 @@ export default function Abertura() {
           width={1200}
           height={1600}
           fetchPriority="high"
-          initial={{ scale: 1.18, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+          initial={{ transform: 'scale(1.18)', opacity: 0 }}
+          animate={{ transform: 'scale(1)', opacity: 1 }}
           transition={{ duration: 2.4, ease: curvaSuave }}
           className="size-full object-cover object-[50%_28%]"
         />
@@ -61,7 +61,7 @@ export default function Abertura() {
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <h1
           aria-label={nomeDaProfessora}
-          className="font-titulo text-[clamp(3.4rem,11vw,8rem)] leading-[0.92] tracking-tight drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)]"
+          className="font-titulo text-[clamp(3.4rem,11vw,8rem)] leading-[0.92] tracking-tight [text-shadow:0_4px_24px_rgba(0,0,0,0.45)]"
         >
           {palavrasDoNome.map(({ palavra, posicaoDaPrimeiraLetra }) => (
             <span key={palavra} aria-hidden="true" className="block whitespace-nowrap">
@@ -69,8 +69,8 @@ export default function Abertura() {
                 <span key={posicaoNaPalavra} className="inline-block overflow-hidden pb-[0.08em] align-bottom">
                   <motion.span
                     className="inline-block"
-                    initial={{ y: '105%', rotate: 8 }}
-                    animate={{ y: 0, rotate: 0 }}
+                    initial={{ transform: 'translateY(105%) rotate(8deg)' }}
+                    animate={{ transform: 'translateY(0%) rotate(0deg)' }}
                     transition={{
                       duration: 0.8,
                       ease: curvaSuave,
@@ -86,16 +86,16 @@ export default function Abertura() {
         </h1>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(16px)' }}
+          animate={{ opacity: 1, transform: 'translateY(0px)' }}
           transition={{ duration: 0.8, delay: 0.9, ease: curvaSuave }}
         >
           <FatosEmDestaque />
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(16px)' }}
+          animate={{ opacity: 1, transform: 'translateY(0px)' }}
           transition={{ duration: 0.8, delay: 1.1, ease: curvaSuave }}
           className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5"
         >
@@ -118,7 +118,7 @@ export default function Abertura() {
         >
           <motion.span
             aria-hidden="true"
-            animate={{ x: [0, 6, 0] }}
+            animate={{ transform: ['translateX(0px)', 'translateX(6px)', 'translateX(0px)'] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut', delay: 2.4 }}
           >
             <Hand className="size-4" />

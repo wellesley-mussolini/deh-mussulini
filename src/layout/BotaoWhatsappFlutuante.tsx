@@ -25,11 +25,11 @@ export default function BotaoWhatsappFlutuante() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chamar a Deh no WhatsApp"
-          initial={{ scale: 0, rotate: -90 }}
-          animate={{ scale: 1, rotate: 0 }}
-          exit={{ scale: 0, rotate: 90 }}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.94 }}
+          initial={{ transform: 'scale(0) rotate(-90deg)' }}
+          animate={{ transform: 'scale(1) rotate(0deg)' }}
+          exit={{ transform: 'scale(0) rotate(90deg)' }}
+          whileHover={{ transform: 'scale(1.08) rotate(0deg)' }}
+          whileTap={{ transform: 'scale(0.94) rotate(0deg)' }}
           transition={{ type: 'spring', stiffness: 260, damping: 18 }}
           className="fixed right-4 bottom-4 z-40 grid size-16 place-items-center rounded-full bg-roseta text-tampo-claro shadow-xl shadow-jacaranda/30 md:hidden"
         >

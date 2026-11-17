@@ -21,9 +21,9 @@ export default function FatosEmDestaque() {
         <AnimatePresence initial={false}>
           <motion.span
             key={posicaoDoFato}
-            initial={{ y: '100%', opacity: 0, filter: 'blur(8px)' }}
-            animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-            exit={{ y: '-100%', opacity: 0, filter: 'blur(8px)' }}
+            initial={{ transform: 'translateY(100%)', opacity: 0, filter: 'blur(8px)' }}
+            animate={{ transform: 'translateY(0%)', opacity: 1, filter: 'blur(0px)' }}
+            exit={{ transform: 'translateY(-100%)', opacity: 0, filter: 'blur(8px)' }}
             transition={{ duration: 0.6, ease: curvaSuave }}
             className="absolute inset-x-0 top-0 whitespace-nowrap"
           >
