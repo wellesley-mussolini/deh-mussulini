@@ -34,8 +34,18 @@
 - Variáveis descrevem **conteúdo e função**, por exemplo `registrosAtivos`, `totalCalculado`, `limitePermitido`. Evitar `data`, `doc`, `arr`, `tmp`, `result`, `x`, `valor2` e abreviações opacas.
 - Não usar verbos genéricos como `processar`, `resolver`, `gerenciar`, `handle` quando houver uma ação mais precisa.
 - Referências nomeiam a entidade apontada; nomes de variantes precisam deixar claras as duas diferenças (`valorOriginal` e `valorConvertido`, não `valor` e `valorConvertido`).
-- Convenções: `camelCase` para funções/variáveis, `PascalCase` para componentes/classes/tipos, `MAIUSCULAS_COM_UNDERLINE` para constantes realmente estáticas quando esse for o padrão local; hooks começam com `use`.
-- Evitar nomes excessivamente longos: o objetivo é entender o significado **sem abrir a implementação**, não descrever cada detalhe operacional no identificador.
+- **Caixa:** `camelCase` para **toda** variável, constante e função, inclusive constante estática de módulo e tabela em `*.constants.ts`. `PascalCase` só para componentes, classes, tipos e interfaces. Hooks começam com `use`. **`MAIUSCULAS_COM_UNDERLINE` é proibido.** O ESLint (`@typescript-eslint/naming-convention`) barra no CI.
+- **Nome claro, sem redundância e sem rodeio:** o nome diz o que a coisa é com o menor número de palavras que ainda se entende sem abrir o código. Não repete o que o contexto já informa (o arquivo, o objeto pai, o tipo) nem carrega sufixo técnico ou de unidade que o uso já deixa óbvio (`Ref`, `Percentual`, `EmPx`, `EmHz`, `EmSegundos`). Unidade só entra no nome quando o valor seria ambíguo sem ela (ex.: milissegundos do `setInterval`: `intervaloEntreFatosMs`).
+
+| Proibido | Correto |
+|----------|---------|
+| `const CURVA_SUAVE = ...`, `const LINK_WHATSAPP_DA_DEH = ...` (maiúsculas) | `const curvaSuave = ...`, `const linkDoWhatsapp = ...` |
+| `contextoDeAudioRef` (sufixo técnico `Ref`) | `contextoDeAudio` |
+| `posicaoHorizontalPercentual`, `espessuraEmPx`, `frequenciaEmHz` (unidade que o uso já deixa clara) | `posicaoHorizontal`, `espessura`, `frequencia` |
+| `atrasoDoDedilhadoInicialEmSegundos` (rodeio) | `atrasoDoDedilhado` |
+| `const palavrasDoTitulo` dentro de `TituloRevelado` (repete o contexto) | `const palavras` |
+
+**Teste mental:** "dá para tirar uma palavra deste nome sem que ele perca o sentido?" Se dá, tire.
 - Se uma cadeia de `filter`/`map`/`sort` esconder regra importante, nomear etapas intermediárias que representem conceitos do domínio.
 - Em código legado tocado, melhorar nomes ruins **dentro do escopo seguro da alteração**. Se renomear repercutir em contratos/dados ou muitos consumidores, tratar como mudança de contrato, não como ajuste cosmético.
 
@@ -62,7 +72,7 @@
 - **Simples** = o menor número de conceitos, arquivos e indireções que cobre o problema **inteiro**: todos os casos, erros, autorização, consumidores e testes. Cortar caso, validação, teste ou consumidor para "simplificar" é entrega incompleta, não simplicidade.
 - **Abstração sem necessidade é proibida.** Não criar camada, classe, factory, registry, estratégia, mapa paralelo, helper genérico, parâmetro de configuração ou arquivo "para o futuro", "por padrão arquitetural" ou "porque SOLID manda". SOLID orienta **como dividir responsabilidades reais**; ele não pede abstração nova.
 - **Uma regra, um lugar.** Se o mesmo fato (ex.: qual permissão abre uma rota) pode ser declarado em dois lugares, o desenho está errado: deixe um só e apague o outro, em vez de criar uma camada que concilia os dois.
-- **Cada arquivo no seu lugar.** A pasta diz o que o arquivo **é**; o nome diz o que ele **faz**. Arquivo numa pasta cujo nome não o descreve (regra de negócio em pasta de configuração, hook em `utils/`, contexto fora da pasta de contextos, código de um domínio na pasta compartilhada) é tão errado quanto função com nome genérico: quem procura não acha, e quem acha não entende. O mapa das pastas do frontend está na §5.
+- **Cada arquivo no seu lugar.** A pasta diz o que o arquivo **é**; o nome diz o que ele **faz**. Arquivo numa pasta cujo nome não o descreve (regra de negócio em pasta de configuração, hook em `utils/`, contexto fora da pasta de contextos, código de um domínio na pasta compartilhada) é tão errado quanto função com nome genérico: quem procura não acha, e quem acha não entende. O mapa das pastas do frontend está na §5, e o sufixo obrigatório de cada tipo de arquivo (`*.constants.ts` e os demais) na §5.15.
   - O teste mora em `__tests__/` **ao lado do código que ele testa**, nunca na pasta de quem o consumia antes.
   - **Apagou, moveu ou renomeou um arquivo?** Testes, tipos e arquivos irmãos dele mudam junto, no mesmo passo. Faça `grep` dos imports antigos e confira, arquivo por arquivo, se cada um que sobrou ainda combina com a pasta onde está.
   - Testes quase iguais espalhados em vários arquivos (um por tela ou caso, mudando só os dados) viram **um** teste parametrizado (`describe.each`/`test.each`) no arquivo do assunto.
@@ -108,16 +118,76 @@ Estas regras se aplicam **a qualquer tela ou módulo React atual ou futuro**:
 
 | Pasta | Guarda | Não guarda |
 |-------|--------|------------|
-| `src/domains/<dominio>/` | Tudo de um domínio: páginas, componentes, hooks, services, types, utils e os `__tests__` deles | Código usado por mais de um domínio |
+| `src/domains/<dominio>/` | Tudo de um domínio: páginas, componentes, hooks, services (`*.service.ts`), constantes, types e os `__tests__` deles | Código usado por mais de um domínio; pasta `utils/` (operação que conhece o domínio é service, §5.16) |
 | `src/components/` | Componentes reutilizados por mais de um domínio (`ui/` = design system) | Componente de um domínio só |
 | `src/hooks/` | Hooks (`use*`) reutilizados por mais de um domínio | Hook de um domínio só; função que não é hook |
 | `src/context/` | Contextos da Context API (`createContext` + provider) | Estado local, regra de negócio solta |
 | `src/types/` | Tipos compartilhados entre domínios | Tipo de um domínio só |
-| `src/utils/` | Funções puras compartilhadas | Hook, componente, regra de um domínio |
+| `src/utils/` | Operações técnicas genéricas, agrupadas por categoria em `<categoria>.utils.ts` (§5.16) | Regra de negócio, decisão, entidade do domínio, integração com sistema externo, hook, componente |
+| `src/integracoes/` | Conversa com sistema ou protocolo externo (montar link `wa.me`, chamar API de terceiro), em `<sistema>.integracao.ts` | Regra de negócio de quando e por que integrar |
 | `src/constants/` | Tabelas estáticas do app (contatos, navegação) e a leitura delas | Configuração de ambiente, regra de um domínio |
 | `src/config/` | Configuração de ambiente e execução (variáveis) | Regra de negócio, teste de outro assunto |
 | `src/layout/` | A casca da aplicação (cabeçalho, rodapé) | Seção de domínio |
 | `src/test/` | Setup do Vitest | Testes (moram em `__tests__/` ao lado do código) |
+
+15. **O nome do arquivo diz o tipo do que ele guarda.** A pasta não basta: o arquivo carrega o sufixo do seu tipo **em qualquer pasta**, inclusive dentro de `src/domains/<dominio>/`. Quem lê só o nome do arquivo (num import, numa busca, numa aba do editor) sabe o que tem dentro sem abrir.
+
+| O arquivo guarda | Nome do arquivo | Exemplo |
+|------------------|-----------------|---------|
+| Constantes: tabelas estáticas, textos fixos da página, listas de navegação, configurações de animação | `<assunto>.constants.ts` | `contato.constants.ts`, `conteudo.constants.ts` |
+| Componente React | `<NomeDoComponente>.tsx` (PascalCase) | `BotaoWhatsapp.tsx` |
+| Hook | `use<Assunto>.ts` ou `.tsx` | `useMenuCelular.ts` |
+| Operações técnicas genéricas | `<categoria>.utils.ts` (categoria em português, salvo termo técnico consagrado como `regex`) | `texto.utils.ts`, `regex.utils.ts` |
+| Regras e operações de um domínio | `<assunto>.service.ts` | `somDoViolao.service.ts` |
+| Integração com sistema externo | `<sistema>.integracao.ts` | `whatsapp.integracao.ts` |
+| Teste | `<arquivoTestado>.test.ts(x)`, em `__tests__/` ao lado do código | `linkWhatsapp.test.ts` |
+
+| Proibido | Correto |
+|----------|---------|
+| `src/constants/contato.ts` (a pasta diz "constante", o arquivo não) | `src/constants/contato.constants.ts` |
+| `src/domains/aulas/conteudo.ts` com os textos fixos da página | `src/domains/aulas/conteudo.constants.ts` |
+| Import que esconde o tipo: `from '../constants/contato'` | `from '../constants/contato.constants'` |
+
+**Teste mental:** "lendo só o nome do arquivo, sem a pasta, dá para saber que ele guarda constantes?" Se não, falta o sufixo.
+
+16. **Utils executa operação; o domínio decide.** Separar a operação técnica genérica da regra de negócio é o que permite levar os utilitários para outro repositório sem arrastar o domínio junto.
+
+- **`src/utils/` é agnóstico.** Só operação técnica, genérica e determinística: transformar texto, extrair dígitos, formatar data, operar sobre lista ou objeto, regex, conversão de formato, codificação, cálculo genérico. Não conhece entidade, regra, permissão, estado nem fluxo da aplicação. Não decide se algo pode acontecer, não orquestra, não chama sistema externo e não importa nada de `domains/`, `integracoes/` ou componentes. Proteger a própria operação contra entrada tecnicamente impossível é permitido; validar regra do domínio, não.
+- **Agrupar por categoria técnica, num objeto.** Um arquivo por categoria (`texto.utils.ts`, `data.utils.ts`, `lista.utils.ts`, `regex.utils.ts`), nunca um arquivo por função. Cada arquivo exporta **um objeto agrupador** em camelCase, `<categoria>Utils`, com métodos de verbo concreto + objeto. O sufixo `Utils` do agrupador é o padrão do projeto, como o `.constants.ts` no arquivo, e não o sufixo técnico proibido na §2.
+
+  ```ts
+  // src/utils/texto.utils.ts
+  export const textoUtils = {
+    extrairDigitos: (texto: string) => texto.replace(/\D/g, ''),
+    removerEspacosDuplicados: (texto: string) => texto.replace(/\s+/g, ' ').trim(),
+  }
+
+  // no consumidor
+  textoUtils.extrairDigitos(telefone)
+  ```
+- **Sem barril:** não criar `utils/index.ts` que só reexporta (§1.2). O consumidor importa do arquivo da categoria.
+- **Objeto ou classe:** objeto agrupador para operação pura e sem estado. Classe só quando houver estado, dependência injetada ou ciclo de vida real (§4). Não criar classe para empacotar função pura.
+- **Regra de negócio mora no domínio:** em `src/domains/<dominio>/`, como hook (quando envolve estado ou ciclo de vida do React) ou como `<assunto>.service.ts` (operação do domínio sem React). O service decide quando usar um util, com que dados e o que fazer com o resultado. O util não conhece quem o usa.
+- **Integração com sistema externo** (protocolo, URL, API de terceiro) mora em `src/integracoes/<sistema>.integracao.ts`, nem em utils nem espalhada pelo domínio. Ela segue a documentação oficial do fornecedor (§6).
+- **Reutilizável não é o mesmo que util.** Uma função usada em vários lugares só é util se for genuinamente independente do domínio.
+
+| Operação | Onde mora |
+|----------|-----------|
+| Extrair só os dígitos de um texto | `textoUtils` em `src/utils/texto.utils.ts` |
+| Formatar uma data | `dataUtils` em `src/utils/data.utils.ts` |
+| Montar o link `wa.me` com mensagem | `whatsappIntegracao` em `src/integracoes/whatsapp.integracao.ts` |
+| Sintetizar a nota de uma corda do violão | `somDoViolaoService` em `src/domains/aulas/services/somDoViolao.service.ts` |
+| Decidir quais etapas do caminho estão acesas | hook ou service do domínio `aulas` |
+
+| Proibido | Correto |
+|----------|---------|
+| `src/utils/linkWhatsapp.ts` (conhece o protocolo do WhatsApp) | `src/integracoes/whatsapp.integracao.ts`, usando `textoUtils.extrairDigitos` |
+| `src/domains/aulas/utils/tocarNotaDeViolao.ts` (conhece o violão) | `src/domains/aulas/services/somDoViolao.service.ts` |
+| Um arquivo por função: `extrairDigitos.ts`, `removerEspacos.ts` | Um arquivo por categoria: `texto.utils.ts` com `textoUtils` |
+| `export function extrairDigitos` solta, chamada como `extrairDigitos(valor)` | `textoUtils.extrairDigitos(valor)` |
+| `utils/index.ts` reexportando todas as categorias | Import direto de `texto.utils.ts` |
+
+**Teste mental, antes de pôr algo em `src/utils/`:** "essa operação funcionaria em qualquer outro projeto, sem conhecer nenhuma regra, entidade ou contexto deste?" Se sim, é util. Se depende do domínio, é service ou hook do domínio. Se fala com um sistema externo, é integração.
 
 ## 6. Contratos, schemas, enums e integrações
 
@@ -243,6 +313,7 @@ Integração com sistema de terceiro segue a **documentação oficial do fornece
 - [ ] Usei só `const`, sem `let`/`var`, comentários óbvios ou código morto?
 - [ ] Responsabilidades estão coesas; SOLID foi aplicado sem burocracia?
 - [ ] Cada arquivo criado, movido ou que perdeu o assunto mora na pasta que descreve o que ele é, e cada teste ao lado do código que testa?
+- [ ] Cada arquivo tem o sufixo do seu tipo (§5.15), por exemplo constantes em `*.constants.ts`, em qualquer pasta?
 - [ ] Componentes React priorizam renderização; lógica complexa está em hooks; tipos estão fora dos componentes?
 - [ ] Não dupliquei contratos, dados, estado ou fonte de verdade?
 - [ ] Toda chamada a API externa que criei ou alterei segue a documentação oficial (rota, método, campos, códigos de resposta), com a seção citada, e nada nela vem de hipótese ou de log de campo?
