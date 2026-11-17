@@ -34,8 +34,18 @@
 - Variáveis descrevem **conteúdo e função**, por exemplo `registrosAtivos`, `totalCalculado`, `limitePermitido`. Evitar `data`, `doc`, `arr`, `tmp`, `result`, `x`, `valor2` e abreviações opacas.
 - Não usar verbos genéricos como `processar`, `resolver`, `gerenciar`, `handle` quando houver uma ação mais precisa.
 - Referências nomeiam a entidade apontada; nomes de variantes precisam deixar claras as duas diferenças (`valorOriginal` e `valorConvertido`, não `valor` e `valorConvertido`).
-- Convenções: `camelCase` para funções/variáveis, `PascalCase` para componentes/classes/tipos, `MAIUSCULAS_COM_UNDERLINE` para constantes realmente estáticas quando esse for o padrão local; hooks começam com `use`.
-- Evitar nomes excessivamente longos: o objetivo é entender o significado **sem abrir a implementação**, não descrever cada detalhe operacional no identificador.
+- **Caixa:** `camelCase` para **toda** variável, constante e função, inclusive constante estática de módulo e tabela em `*.constants.ts`. `PascalCase` só para componentes, classes, tipos e interfaces. Hooks começam com `use`. **`MAIUSCULAS_COM_UNDERLINE` é proibido.** O ESLint (`@typescript-eslint/naming-convention`) barra no CI.
+- **Nome claro, sem redundância e sem rodeio:** o nome diz o que a coisa é com o menor número de palavras que ainda se entende sem abrir o código. Não repete o que o contexto já informa (o arquivo, o objeto pai, o tipo) nem carrega sufixo técnico ou de unidade que o uso já deixa óbvio (`Ref`, `Percentual`, `EmPx`, `EmHz`, `EmSegundos`). Unidade só entra no nome quando o valor seria ambíguo sem ela (ex.: milissegundos do `setInterval`: `intervaloEntreFatosMs`).
+
+| Proibido | Correto |
+|----------|---------|
+| `const CURVA_SUAVE = ...`, `const LINK_WHATSAPP_DA_DEH = ...` (maiúsculas) | `const curvaSuave = ...`, `const linkDoWhatsapp = ...` |
+| `contextoDeAudioRef` (sufixo técnico `Ref`) | `contextoDeAudio` |
+| `posicaoHorizontalPercentual`, `espessuraEmPx`, `frequenciaEmHz` (unidade que o uso já deixa clara) | `posicaoHorizontal`, `espessura`, `frequencia` |
+| `atrasoDoDedilhadoInicialEmSegundos` (rodeio) | `atrasoDoDedilhado` |
+| `const palavrasDoTitulo` dentro de `TituloRevelado` (repete o contexto) | `const palavras` |
+
+**Teste mental:** "dá para tirar uma palavra deste nome sem que ele perca o sentido?" Se dá, tire.
 - Se uma cadeia de `filter`/`map`/`sort` esconder regra importante, nomear etapas intermediárias que representem conceitos do domínio.
 - Em código legado tocado, melhorar nomes ruins **dentro do escopo seguro da alteração**. Se renomear repercutir em contratos/dados ou muitos consumidores, tratar como mudança de contrato, não como ajuste cosmético.
 
@@ -62,7 +72,7 @@
 - **Simples** = o menor número de conceitos, arquivos e indireções que cobre o problema **inteiro**: todos os casos, erros, autorização, consumidores e testes. Cortar caso, validação, teste ou consumidor para "simplificar" é entrega incompleta, não simplicidade.
 - **Abstração sem necessidade é proibida.** Não criar camada, classe, factory, registry, estratégia, mapa paralelo, helper genérico, parâmetro de configuração ou arquivo "para o futuro", "por padrão arquitetural" ou "porque SOLID manda". SOLID orienta **como dividir responsabilidades reais**; ele não pede abstração nova.
 - **Uma regra, um lugar.** Se o mesmo fato (ex.: qual permissão abre uma rota) pode ser declarado em dois lugares, o desenho está errado: deixe um só e apague o outro, em vez de criar uma camada que concilia os dois.
-- **Cada arquivo no seu lugar.** A pasta diz o que o arquivo **é**; o nome diz o que ele **faz**. Arquivo numa pasta cujo nome não o descreve (regra de negócio em pasta de configuração, hook em `utils/`, contexto fora da pasta de contextos, código de um domínio na pasta compartilhada) é tão errado quanto função com nome genérico: quem procura não acha, e quem acha não entende. O mapa das pastas do frontend está na §5.
+- **Cada arquivo no seu lugar.** A pasta diz o que o arquivo **é**; o nome diz o que ele **faz**. Arquivo numa pasta cujo nome não o descreve (regra de negócio em pasta de configuração, hook em `utils/`, contexto fora da pasta de contextos, código de um domínio na pasta compartilhada) é tão errado quanto função com nome genérico: quem procura não acha, e quem acha não entende. O mapa das pastas do frontend está na §5, e o sufixo obrigatório de cada tipo de arquivo (`*.constants.ts` e os demais) na §5.15.
   - O teste mora em `__tests__/` **ao lado do código que ele testa**, nunca na pasta de quem o consumia antes.
   - **Apagou, moveu ou renomeou um arquivo?** Testes, tipos e arquivos irmãos dele mudam junto, no mesmo passo. Faça `grep` dos imports antigos e confira, arquivo por arquivo, se cada um que sobrou ainda combina com a pasta onde está.
   - Testes quase iguais espalhados em vários arquivos (um por tela ou caso, mudando só os dados) viram **um** teste parametrizado (`describe.each`/`test.each`) no arquivo do assunto.
@@ -118,6 +128,23 @@ Estas regras se aplicam **a qualquer tela ou módulo React atual ou futuro**:
 | `src/config/` | Configuração de ambiente e execução (variáveis) | Regra de negócio, teste de outro assunto |
 | `src/layout/` | A casca da aplicação (cabeçalho, rodapé) | Seção de domínio |
 | `src/test/` | Setup do Vitest | Testes (moram em `__tests__/` ao lado do código) |
+
+15. **O nome do arquivo diz o tipo do que ele guarda.** A pasta não basta: o arquivo carrega o sufixo do seu tipo **em qualquer pasta**, inclusive dentro de `src/domains/<dominio>/`. Quem lê só o nome do arquivo (num import, numa busca, numa aba do editor) sabe o que tem dentro sem abrir.
+
+| O arquivo guarda | Nome do arquivo | Exemplo |
+|------------------|-----------------|---------|
+| Constantes: tabelas estáticas, textos fixos da página, listas de navegação, configurações de animação | `<assunto>.constants.ts` | `contato.constants.ts`, `conteudo.constants.ts` |
+| Componente React | `<NomeDoComponente>.tsx` (PascalCase) | `BotaoWhatsapp.tsx` |
+| Hook | `use<Assunto>.ts` ou `.tsx` | `useMenuCelular.ts` |
+| Teste | `<arquivoTestado>.test.ts(x)`, em `__tests__/` ao lado do código | `linkWhatsapp.test.ts` |
+
+| Proibido | Correto |
+|----------|---------|
+| `src/constants/contato.ts` (a pasta diz "constante", o arquivo não) | `src/constants/contato.constants.ts` |
+| `src/domains/aulas/conteudo.ts` com os textos fixos da página | `src/domains/aulas/conteudo.constants.ts` |
+| Import que esconde o tipo: `from '../constants/contato'` | `from '../constants/contato.constants'` |
+
+**Teste mental:** "lendo só o nome do arquivo, sem a pasta, dá para saber que ele guarda constantes?" Se não, falta o sufixo.
 
 ## 6. Contratos, schemas, enums e integrações
 
@@ -243,6 +270,7 @@ Integração com sistema de terceiro segue a **documentação oficial do fornece
 - [ ] Usei só `const`, sem `let`/`var`, comentários óbvios ou código morto?
 - [ ] Responsabilidades estão coesas; SOLID foi aplicado sem burocracia?
 - [ ] Cada arquivo criado, movido ou que perdeu o assunto mora na pasta que descreve o que ele é, e cada teste ao lado do código que testa?
+- [ ] Cada arquivo tem o sufixo do seu tipo (§5.15), por exemplo constantes em `*.constants.ts`, em qualquer pasta?
 - [ ] Componentes React priorizam renderização; lógica complexa está em hooks; tipos estão fora dos componentes?
 - [ ] Não dupliquei contratos, dados, estado ou fonte de verdade?
 - [ ] Toda chamada a API externa que criei ou alterei segue a documentação oficial (rota, método, campos, códigos de resposta), com a seção citada, e nada nela vem de hipótese ou de log de campo?
