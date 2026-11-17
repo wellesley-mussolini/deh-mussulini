@@ -73,8 +73,8 @@ export default function EscalaDoViolao() {
           {notasNoAr.map((nota) => (
             <motion.span
               key={nota.id}
-              initial={{ opacity: 0, y: 0, scale: 0.6, rotate: -10 }}
-              animate={{ opacity: [0, 1, 1, 0], y: -140, scale: 1.15, rotate: 10 }}
+              initial={{ opacity: 0, transform: 'translateY(0px) scale(0.6) rotate(-10deg)' }}
+              animate={{ opacity: [0, 1, 1, 0], transform: 'translateY(-140px) scale(1.15) rotate(10deg)' }}
               transition={{ duration: duracaoDaNota, ease: 'easeOut' }}
               className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-tampo px-3 py-1 font-titulo text-lg whitespace-nowrap text-jacaranda shadow-lg shadow-black/30"
               style={{ left: `${nota.posicaoHorizontal}%`, top: `${nota.posicaoVertical}%` }}

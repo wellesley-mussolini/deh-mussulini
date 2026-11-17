@@ -7,7 +7,7 @@ export default function ChamadaFinal() {
     <section data-fundo="escuro" className="relative isolate overflow-hidden bg-roseta py-28 text-tampo-claro sm:py-36">
       <motion.div
         aria-hidden="true"
-        animate={{ scale: [1, 1.15, 1], opacity: [0.35, 0.55, 0.35] }}
+        animate={{ transform: ['scale(1)', 'scale(1.15)', 'scale(1)'], opacity: [0.35, 0.55, 0.35] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute -right-32 -bottom-32 -z-10 size-[32rem] rounded-full bg-roseta-escuro blur-2xl"
       />

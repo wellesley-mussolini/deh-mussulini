@@ -48,7 +48,7 @@ export default function CaminhoDoAluno() {
                 >
                   <motion.span
                     aria-hidden="true"
-                    animate={{ scale: etapaAlcancada ? [1, 1.25, 1] : 1 }}
+                    animate={{ transform: etapaAlcancada ? ['scale(1)', 'scale(1.25)', 'scale(1)'] : 'scale(1)' }}
                     transition={{ duration: 0.5 }}
                     className={`absolute top-0 -left-20 grid size-15 place-items-center rounded-full border-4 border-tampo font-titulo text-2xl text-tampo-claro transition-colors duration-500 sm:-left-24 sm:size-19 ${
                       etapaAlcancada ? 'bg-roseta' : 'bg-jacaranda'

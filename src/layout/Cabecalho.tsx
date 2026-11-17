@@ -72,8 +72,8 @@ export default function Cabecalho() {
               {itensDoMenu.map((secao, posicao) => (
                 <motion.li
                   key={secao.ancora}
-                  initial={{ x: -16, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ transform: 'translateX(-16px)', opacity: 0 }}
+                  animate={{ transform: 'translateX(0px)', opacity: 1 }}
                   transition={{ delay: 0.05 * posicao + 0.1 }}
                 >
                   <a

@@ -1,4 +1,4 @@
-import fotoNoPalco from '../../assets/fotos/deh-no-palco-luzes.jpg'
+import fotoNoPalco from '../../assets/fotos/deh-no-palco-luzes.webp'
 
 export const fotoDaAbertura = fotoNoPalco
 

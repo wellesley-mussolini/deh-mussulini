@@ -3,18 +3,18 @@ import type { Transition, Variants } from 'motion/react'
 export const curvaSuave: Transition['ease'] = [0.22, 1, 0.36, 1]
 
 export const surgirDeBaixo: Variants = {
-  oculto: { opacity: 0, y: 32 },
-  visivel: { opacity: 1, y: 0, transition: { duration: 0.7, ease: curvaSuave } },
+  oculto: { opacity: 0, transform: 'translateY(32px)' },
+  visivel: { opacity: 1, transform: 'translateY(0px)', transition: { duration: 0.7, ease: curvaSuave } },
 }
 
 export const surgirDaDireita: Variants = {
-  oculto: { opacity: 0, x: 48 },
-  visivel: { opacity: 1, x: 0, transition: { duration: 0.7, ease: curvaSuave } },
+  oculto: { opacity: 0, transform: 'translateX(48px)' },
+  visivel: { opacity: 1, transform: 'translateX(0px)', transition: { duration: 0.7, ease: curvaSuave } },
 }
 
 export const girarParaDentro: Variants = {
-  oculto: { scale: 0, rotate: -90 },
-  visivel: { scale: 1, rotate: 0, transition: { type: 'spring', stiffness: 220, damping: 14, delay: 0.15 } },
+  oculto: { transform: 'scale(0) rotate(-90deg)' },
+  visivel: { transform: 'scale(1) rotate(0deg)', transition: { type: 'spring', stiffness: 220, damping: 14, delay: 0.15 } },
 }
 
 export const revelarEmSequencia: Variants = {
