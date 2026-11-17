@@ -27,7 +27,7 @@ export default function Cabecalho() {
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4 sm:px-6">
         <a href="#inicio" className="font-titulo text-xl text-tampo-claro">
-          Deh Mussulini
+          Deh Muss
         </a>
 
         <div className="hidden items-center gap-8 md:flex">

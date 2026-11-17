@@ -7,7 +7,7 @@ import FatosEmDestaque from '../componentes/FatosEmDestaque'
 import fotoNoPalco from '../../../assets/fotos/deh-no-palco-luzes.jpg'
 import { curvaSuave } from '../animacoes.constants'
 
-const nomeDaProfessora = 'Deh Mussulini'
+const nomeDaProfessora = 'Deh Muss'
 const intervaloEntreLetras = 0.045
 
 const palavrasDoNome = nomeDaProfessora.split(' ').map((palavra, posicaoDaPalavra, palavras) => ({
@@ -36,7 +36,7 @@ export default function Abertura() {
       >
         <motion.img
           src={fotoNoPalco}
-          alt="Deh Mussulini cantando e tocando violão no palco, sob luzes amarelas"
+          alt="Deh Muss cantando e tocando violão no palco, sob luzes amarelas"
           width={1200}
           height={1600}
           fetchPriority="high"

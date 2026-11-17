@@ -1,8 +1,8 @@
 <div align="center">
 
-# Deh Mussulini · Aulas de violão
+# Deh Muss · Aulas de violão
 
-**Site de divulgação das aulas de violão online da professora Débora (Deh) Mussulini, formada em Música pela UFMG.**
+**Site de divulgação das aulas de violão online da professora Deh Muss, formada em Música pela UFMG.**
 Quem chega pelo link conhece as aulas e, com um toque, abre uma conversa no WhatsApp com a Deh, já com a mensagem escrita.
 
 [![Site](https://github.com/wellesley-mussolini/deh-mussulini/actions/workflows/site.yml/badge.svg?branch=prod)](https://github.com/wellesley-mussolini/deh-mussulini/actions/workflows/site.yml)

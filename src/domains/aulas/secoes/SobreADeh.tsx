@@ -36,7 +36,7 @@ export default function SobreADeh() {
           <div className="absolute inset-[12%] overflow-hidden rounded-full border-4 border-tampo/70 shadow-2xl shadow-black/40">
             <motion.img
               src={fotoRetrato}
-              alt="Retrato de Deh Mussulini sorrindo"
+              alt="Retrato de Deh Muss sorrindo"
               width={640}
               height={640}
               loading="lazy"
@@ -76,7 +76,7 @@ export default function SobreADeh() {
         </div>
 
         <div>
-          <TituloRevelado texto="Prazer, Deh Mussulini" />
+          <TituloRevelado texto="Prazer, Deh Muss" />
           <motion.div {...entrarAoAparecer} variants={revelarEmSequencia}>
             <motion.p variants={surgirDeBaixo} className="mt-6 max-w-lg text-lg leading-relaxed text-corda">
               A Deh é professora de violão, formada em Música pela UFMG.

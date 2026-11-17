@@ -37,8 +37,15 @@ describe('site das aulas de violão', () => {
     render(<App />)
 
     expect(screen.getByRole('heading', { name: 'Como são as aulas' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Prazer, Deh Mussulini' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Prazer, Deh Muss' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Do primeiro acorde às primeiras músicas' })).toBeInTheDocument()
+  })
+
+  test('a página apresenta a professora pelo nome artístico, Deh Muss', () => {
+    render(<App />)
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Deh Muss' })).toBeInTheDocument()
+    expect(document.body).not.toHaveTextContent(/mussulini/i)
   })
 
   test('o Instagram da Deh abre o perfil @deh.muss em nova aba', () => {
