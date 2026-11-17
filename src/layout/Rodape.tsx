@@ -5,7 +5,7 @@ export default function Rodape() {
     <footer data-fundo="escuro" className="bg-jacaranda text-corda">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 sm:flex-row sm:items-end sm:justify-between sm:px-6">
         <div>
-          <p className="font-titulo text-2xl text-tampo-claro">Deh Mussulini</p>
+          <p className="font-titulo text-2xl text-tampo-claro">Deh Muss</p>
           <p className="mt-1 text-sm">Aulas de violão</p>
         </div>
         <div className="flex flex-col gap-1 text-sm sm:items-end">
@@ -25,7 +25,7 @@ export default function Rodape() {
           >
             Instagram @deh.muss
           </a>
-          <p className="text-traste">© {new Date().getFullYear()} Deh Mussulini</p>
+          <p className="text-traste">© {new Date().getFullYear()} Deh Muss</p>
         </div>
       </div>
     </footer>

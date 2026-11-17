@@ -24,7 +24,7 @@ export default function ComoSaoAsAulas() {
           <div ref={molduraDaFoto} className="mt-10 aspect-[4/5] overflow-hidden rounded-[2rem] shadow-2xl shadow-jacaranda/25">
             <motion.img
               src={fotoNoSesc}
-              alt="Deh Mussulini cantando e tocando violão no palco"
+              alt="Deh Muss cantando e tocando violão no palco"
               width={900}
               height={1600}
               loading="lazy"
