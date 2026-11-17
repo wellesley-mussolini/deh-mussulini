@@ -34,6 +34,10 @@ export interface PropriedadesDoTituloRevelado {
   className?: string
 }
 
+export interface PropriedadesDaPaginaAulas {
+  siteRevelado: boolean
+}
+
 export interface NotaNoAr {
   id: number
   nomeDaCorda: string
