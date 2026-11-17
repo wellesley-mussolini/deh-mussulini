@@ -31,6 +31,7 @@ describe('site das aulas de violão', () => {
     expect(conteudoVisivel).toMatch(/ritmos brasileiros e internacionais/i)
     expect(conteudoVisivel).toMatch(/apostila de música brasileira cifrada/i)
     expect(conteudoVisivel).toMatch(/formada em música pela ufmg/i)
+    expect(conteudoVisivel).toMatch(/aula de violão para mulheres/i)
   })
 
   test('os títulos animados palavra por palavra mantêm os espaços entre as palavras', () => {
