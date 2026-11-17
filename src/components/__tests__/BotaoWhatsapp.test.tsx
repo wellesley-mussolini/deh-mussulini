@@ -5,7 +5,7 @@ import { linkDoWhatsapp } from '../../constants/contato.constants'
 
 describe('BotaoWhatsapp', () => {
   test('é um link para a conversa com a Deh que abre fora do site', () => {
-    render(<BotaoWhatsapp>Chamar a Deh no WhatsApp</BotaoWhatsapp>)
+    render(<BotaoWhatsapp />)
 
     const chamada = screen.getByRole('link', { name: 'Chamar a Deh no WhatsApp' })
 

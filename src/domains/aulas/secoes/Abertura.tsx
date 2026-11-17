@@ -99,7 +99,7 @@ export default function Abertura() {
           transition={{ duration: 0.8, delay: 1.1, ease: curvaSuave }}
           className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5"
         >
-          <BotaoWhatsapp comBrilho>Chamar a Deh no WhatsApp</BotaoWhatsapp>
+          <BotaoWhatsapp comBrilho />
           <a
             href="#aulas"
             className="text-lg font-medium text-corda underline decoration-tampo/40 underline-offset-8 transition-colors hover:text-tampo-claro hover:decoration-tampo"

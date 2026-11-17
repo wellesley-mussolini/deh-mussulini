@@ -6,6 +6,15 @@ import { contatoDaDeh } from '../constants/contato.constants'
 import { animacaoDeEntradaNaBoca, idDaTelaDeCarregamento } from '../constants/carregamento.constants'
 
 describe('site das aulas de violão', () => {
+  test('os botões de WhatsApp das seções chamam a ação pelo mesmo nome', () => {
+    render(<App />)
+
+    const chamadasDasSecoes = within(screen.getByRole('main')).getAllByRole('link', { name: /whatsapp/i })
+
+    expect(chamadasDasSecoes.length).toBeGreaterThanOrEqual(3)
+    chamadasDasSecoes.forEach((chamada) => expect(chamada).toHaveTextContent('Chamar a Deh no WhatsApp'))
+  })
+
   test('toda chamada de WhatsApp abre a conversa com a Deh em nova aba, com a mensagem pronta', () => {
     render(<App />)
 

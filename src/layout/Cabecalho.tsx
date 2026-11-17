@@ -42,7 +42,7 @@ export default function Cabecalho() {
               </a>
             ))}
           </nav>
-          <BotaoWhatsapp tamanho="compacto">WhatsApp</BotaoWhatsapp>
+          <BotaoWhatsapp tamanho="compacto" />
         </div>
 
         <button
