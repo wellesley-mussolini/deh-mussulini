@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import paginaInicial from '../../index.html?raw'
 
-const enderecoDoSite = 'https://dehmuss.com/'
+const enderecoDoSite = 'https://www.dehmuss.com/'
 
 function lerAtributo(seletor: string, atributo: string) {
   const elemento = new DOMParser().parseFromString(paginaInicial, 'text/html').querySelector(seletor)

@@ -7,7 +7,7 @@ Quem chega pelo link conhece as aulas e, com um toque, abre uma conversa no What
 
 [![Site](https://github.com/wellesley-mussolini/deh-mussulini/actions/workflows/site.yml/badge.svg?branch=prod)](https://github.com/wellesley-mussolini/deh-mussulini/actions/workflows/site.yml)
 &nbsp;
-[**Abrir o site**](https://dehmuss.com/)
+[**Abrir o site**](https://www.dehmuss.com/)
 
 ![Abertura do site, com o nome da Deh e as seis cordas do violão](docs/abertura.png)
 
@@ -110,14 +110,14 @@ As regras de código do projeto estão em [`AGENTS.md`](AGENTS.md), incluindo o 
 
 Cada pull request roda lint, testes e build. O merge na `prod` publica o site no GitHub Pages automaticamente ([`.github/workflows/site.yml`](.github/workflows/site.yml)).
 
-O site responde em `dehmuss.com`, domínio próprio configurado nas opções do Pages do repositório (Settings → Pages → Custom domain), não num arquivo `CNAME`: quem publica por GitHub Actions não usa esse arquivo. O DNS do domínio aponta para o GitHub:
+O site responde em `www.dehmuss.com` (o `dehmuss.com` sem www redireciona para ele), domínio próprio configurado nas opções do Pages do repositório (Settings → Pages → Custom domain), não num arquivo `CNAME`: quem publica por GitHub Actions não usa esse arquivo. O DNS do domínio aponta para o GitHub:
 
 | Tipo | Nome | Valor |
 |---|---|---|
 | A | `@` | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` |
 | CNAME | `www` | `wellesley-mussolini.github.io` |
 
-O endereço antigo, `wellesley-mussolini.github.io/deh-mussulini/`, redireciona sozinho para o domínio.
+O endereço antigo, `wellesley-mussolini.github.io/deh-mussulini/`, redireciona sozinho para `www.dehmuss.com`.
 
 ## Fotos
 
