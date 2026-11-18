@@ -29,7 +29,7 @@ export function useCarregamentoDoSite(imagensEssenciais: readonly string[]) {
     void Promise.allSettled([
       document.fonts.ready,
       ...imagensEssenciais.map(decodificarImagem),
-      esperar(tempoMinimoNaTelaMs - performance.now()),
+      esperar(Math.max(0, tempoMinimoNaTelaMs - performance.now())),
     ]).then(() => {
       if (!desmontagem.signal.aborted) telaDeCarregamento.classList.add('revelando')
     })
