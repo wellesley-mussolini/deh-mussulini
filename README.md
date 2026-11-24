@@ -60,6 +60,8 @@ A página alterna os dois materiais do violão: a **escala**, escura, e o **tamp
 Precisa de Node.js 24.
 
 ```bash
+git clone https://github.com/wellesley-mussolini/deh-mussulini.git
+cd deh-mussulini
 npm ci
 npm run dev        # site em http://localhost:5173/
 ```
