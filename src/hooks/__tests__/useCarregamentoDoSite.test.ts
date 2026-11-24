@@ -125,4 +125,17 @@ describe('useCarregamentoDoSite', () => {
 
     expect(telaDeCarregamento).toHaveClass('revelando')
   })
+
+  test('num celular lento, que passou do tempo mínimo baixando o site, não agenda espera com tempo negativo', () => {
+    montarTelaDeCarregamento()
+    simularNavegadorCarregando()
+    vi.spyOn(performance, 'now').mockReturnValue(tempoMinimoNaTelaMs + 2600)
+    const agendamentos = vi.spyOn(globalThis, 'setTimeout')
+
+    renderHook(() => useCarregamentoDoSite(imagensEssenciais))
+
+    const atrasosAgendados = agendamentos.mock.calls.map(([, atraso]) => atraso)
+    expect(atrasosAgendados).toContain(0)
+    expect(atrasosAgendados.every((atraso) => atraso === undefined || atraso >= 0)).toBe(true)
+  })
 })
